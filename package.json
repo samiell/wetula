@@ -1,0 +1,25 @@
+{
+  "name": "wetula",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sever.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samiell/wetula.git"
+  },
+  "author": "Daniel Kofi Kyeremateng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samiell/wetula/issues"
+  },
+  "homepage": "https://github.com/samiell/wetula#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.32.2"
+  }
+}
