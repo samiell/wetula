@@ -1,3 +1,5 @@
 module.exports = {
-    postgresURL: 'postgres://username:password@localhost:5432/database'
+    postgresURL: 'postgres://wayne:root@localhost:5432/wetula',
+    jwtSK: 'YHT%^^',
+    cryptojsSK: 'ABC*&('
 };
