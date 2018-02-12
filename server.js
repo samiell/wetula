@@ -16,8 +16,15 @@ app.get('/', (req, res) => {
 });
 
 require('./routes/userRoute')(app, db.User, _, bcrypt);
+require('./routes/farmerRoute')(
+    app,
+    db.Farmer,
+    db.FarmerHomeAddress,
+    db.FarmerPostalAddress,
+    _
+);
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => {
         console.log('Server running on port ' + PORT);
     });
