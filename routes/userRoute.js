@@ -4,7 +4,7 @@ const userSchema = require('../schemas/userSchema');
 
 module.exports = (app, User, _, bcrypt) => {
 
-    app.get('/api/users', (req, res) => {
+    app.get('/users', (req, res) => {
         User.findAll().then(u => {
             let users = [];
 
@@ -16,7 +16,7 @@ module.exports = (app, User, _, bcrypt) => {
         });
     });
 
-    app.get('/api/users/:id', (req, res) => {
+    app.get('/users/:id', (req, res) => {
         const id = parseInt(req.params.id, 10);
 
         User.findById(id).then(user => {
@@ -29,7 +29,7 @@ module.exports = (app, User, _, bcrypt) => {
         });
     });
 
-    app.post('/api/users', (req, res) => {
+    app.post('/users', (req, res) => {
         const body = _.pick(req.body, 'email', 'password', 'username');
 
         if (!(Validator(body, userSchema.register_schema).valid)) {
@@ -44,7 +44,7 @@ module.exports = (app, User, _, bcrypt) => {
         });
     });
 
-    app.post('/api/users/login', (req, res) => {
+    app.post('/users/login', (req, res) => {
         const body = _.pick(req.body, 'password', 'username');
 
         if (!(Validator(body, userSchema.login_schema).valid)) {

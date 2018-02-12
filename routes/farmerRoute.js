@@ -4,7 +4,7 @@ const farmerSchema = require('../schemas/farmerSchema');
 
 module.exports = (app, Farmer, FarmerHA, FarmerPA, _) => {
 
-    app.get('/api/farmers', (req, res) => {
+    app.get('/farmers', (req, res) => {
 
         Farmer.findAll().then(f => {
             var farmers = [];
@@ -17,7 +17,7 @@ module.exports = (app, Farmer, FarmerHA, FarmerPA, _) => {
         });
     });
 
-    app.post('/api/farmers', (req, res) => {
+    app.post('/farmers', (req, res) => {
         const farmerInfo = _.pick(req.body.farmerInfo, 'firstName', 'lastName', 'nickName', 'dateOfBirth', 'middleName', 'gender', 'telephone');
         const farmerHomeAdd = _.pick(req.body.farmerHomeAdd, 'town', 'street', 'houseNumber');
 
