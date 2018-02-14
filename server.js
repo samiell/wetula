@@ -21,6 +21,7 @@ require('./routes/farmerRoute')(
     db.Farmer,
     db.FarmerHomeAddress,
     db.FarmerPostalAddress,
+    db.FarmerPicture,
     _
 );
 

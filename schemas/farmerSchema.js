@@ -1,6 +1,6 @@
 const farmerSchema = {};
 
-const register_schema = {
+const farmarInfo = {
     type: 'object',
     properties: {
         firstName: {
@@ -40,22 +40,59 @@ const register_schema = {
     required: ['firstName', 'lastName', 'telephone', 'dateOfBirth', 'gender']
 };
 
-const login_schema = {
+const farmerHomeAdd = {
     type: 'object',
     properties: {
-        'username': {
+        town: {
             'type': 'string',
-            'minLength': 6
+            'minLength': 3
         },
-        password: {
-            'type': 'string',
-            'minLength': 7
+        street: {
+            type: 'string'
+        },
+        houseNumber: {
+            type: 'string'
         }
     },
-    required: ['password', 'username']
+    required: ['town', 'street', 'houseNumber']
 };
 
-farmerSchema.login_schema = login_schema;
-farmerSchema.register_schema = register_schema;
+const farmerPostalAdd = {
+    type: 'object',
+    properties: {
+        town: {
+            type: 'string'
+        },
+        street: {
+            type: 'string'
+        },
+        postOfficeBox: {
+            type: 'string'
+        },
+        district: {
+            type: 'string'
+        },
+        region: {
+            type: 'string'
+        }
+    },
+    required: ['town', 'street', 'postOfficeBox', 'district', 'region']
+};
+
+const farmerPicture = {
+    type: 'object',
+    properties: {
+        pictureUrl: {
+            type: 'string',
+            format: 'uri'
+        }
+    },
+    required: ['pictureUrl']
+};
+
+farmerSchema.farmerPostalAdd = farmerPostalAdd;
+farmerSchema.farmerHomeAdd = farmerHomeAdd;
+farmerSchema.farmarInfo = farmarInfo;
+farmerSchema.farmerPicture = farmerPicture;
 
 module.exports = farmerSchema;

@@ -2,7 +2,7 @@ const Validator = require('jsonschema').validate;
 
 const farmerSchema = require('../schemas/farmerSchema');
 
-module.exports = (app, Farmer, FarmerHA, FarmerPA, _) => {
+module.exports = (app, Farmer, FarmerHA, FarmerPA, FarmerPic, _) => {
 
     app.get('/farmers', (req, res) => {
 
@@ -20,9 +20,26 @@ module.exports = (app, Farmer, FarmerHA, FarmerPA, _) => {
     app.post('/farmers', (req, res) => {
         const farmerInfo = _.pick(req.body.farmerInfo, 'firstName', 'lastName', 'nickName', 'dateOfBirth', 'middleName', 'gender', 'telephone');
         const farmerHomeAdd = _.pick(req.body.farmerHomeAdd, 'town', 'street', 'houseNumber');
+        const farmerPostalAdd = _.pick(req.body.farmerPostalAdd, 'town', 'street', 'postOfficeBox', 'district', 'region');
+        const farmerPicture = _.pick(req.body.farmerPicture, 'pictureUrl');
 
-        if (!(Validator(farmerInfo, farmerSchema.register_schema).valid)) {
-            const errors = Validator(farmerInfo, farmerSchema.register_schema).errors;
+        if (!(Validator(farmerInfo, farmerSchema.farmarInfo).valid)) {
+            const errors = Validator(farmerInfo, farmerSchema.farmarInfo).errors;
+            return res.status(400).json(errors);
+        }
+
+        if (!(Validator(farmerHomeAdd, farmerSchema.farmerHomeAdd).valid)) {
+            const errors = Validator(farmerHomeAdd, farmerSchema.farmerHomeAdd).errors;
+            return res.status(400).json(errors);
+        }
+
+        if (!(Validator(farmerPostalAdd, farmerSchema.farmerPostalAdd).valid)) {
+            const errors = Validator(farmerPostalAdd, farmerSchema.farmerPostalAdd).errors;
+            return res.status(400).json(errors);
+        }
+
+        if (!(Validator(farmerPicture, farmerSchema.farmerPicture).valid)) {
+            const errors = Validator(farmerPicture, farmerSchema.farmerPicture).errors;
             return res.status(400).json(errors);
         }
 
@@ -33,7 +50,21 @@ module.exports = (app, Farmer, FarmerHA, FarmerPA, _) => {
         }).then(farmerHA => {
             Farmer.create(farmerInfo).then(farmer => {
                 farmer.setFarmerHomeAddress(farmerHA);
-                res.json(farmer.toPublicJSON());
+                return farmer;
+            }).then(farmer => {
+                FarmerPA.create(farmerPostalAdd).then(farmerPA => {
+                    farmer.setFarmerPostalAddress(farmerPA);
+                    return farmer;
+                }).then(farmer => {
+                    console.log(farmerPicture);
+                    FarmerPic.create(farmerPicture).then(farmerPic => {
+                        farmer.setFarmerPicture(farmerPic);
+                        farmer.reload();
+                        res.json(farmer.toPublicJSON());
+                    }, err => {
+                        res.status(400).json(err);
+                    });
+                });
             }, err => {
                 res.status(400).json(err);
             });

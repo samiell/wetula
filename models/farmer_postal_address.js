@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
                 max: 45
             }
         },
-        post_office_box: {
+        postOfficeBox: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
