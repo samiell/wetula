@@ -6,47 +6,59 @@ const cryptojs = require('crypto-js');
 const keys = require('../instance/keys');
 
 module.exports = (sequelize, DataTypes) => {
-    const FarmerInfo = sequelize.define('farmer_personal_information', {
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        middleName: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        nickName: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        telephone: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        gender: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                isIn: [['Male', 'Female']]
+    const FarmerInfo = sequelize.define(
+        'farmer_personal_information',
+        {
+            firstName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            middleName: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            lastName: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            nickName: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            farmerId: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            telephone: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            gender: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    isIn: [['Male', 'Female']]
+                }
+            },
+            dateOfBirth: {
+                type: DataTypes.DATE,
+                allowNull: false
             }
         },
-        dateOfBirth: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        }
-    }, {
-            hooks: {
-
-            }
+        {
+            hooks: {}
         }
     );
 
-    FarmerInfo.prototype.toPublicJSON = function () {
-        var returnList = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'telephone'];
+    FarmerInfo.prototype.toPublicJSON = function() {
+        var returnList = [
+            'firstName',
+            'lastName',
+            'dateOfBirth',
+            'gender',
+            'telephone',
+            'farmerId'
+        ];
 
         if (this.nickName !== null) {
             returnList.push('nickName');
@@ -59,9 +71,7 @@ module.exports = (sequelize, DataTypes) => {
         return _.pick(this.toJSON(), returnList);
     };
 
-    FarmerInfo.prototype.generateToken = function (type) {
-
-    };
+    FarmerInfo.prototype.generateToken = function(type) {};
 
     return FarmerInfo;
 };

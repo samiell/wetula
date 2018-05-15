@@ -1,11 +1,14 @@
 const farmerSchema = {};
 
-const farmarInfo = {
+const farmerInfo = {
     type: 'object',
     properties: {
         firstName: {
             type: 'string',
             minLength: 3
+        },
+        farmerId: {
+            type: 'string'
         },
         lastName: {
             type: 'string',
@@ -27,8 +30,8 @@ const farmarInfo = {
             type: 'string',
             oneOf: [
                 {
-                    "type": "string",
-                    "enum": ["Male", "Female"]
+                    type: 'string',
+                    enum: ['Male', 'Female']
                 }
             ]
         },
@@ -37,15 +40,22 @@ const farmarInfo = {
             pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
         }
     },
-    required: ['firstName', 'lastName', 'telephone', 'dateOfBirth', 'gender']
+    required: [
+        'firstName',
+        'lastName',
+        'telephone',
+        'dateOfBirth',
+        'gender',
+        'farmerId'
+    ]
 };
 
 const farmerHomeAdd = {
     type: 'object',
     properties: {
         town: {
-            'type': 'string',
-            'minLength': 3
+            type: 'string',
+            minLength: 3
         },
         street: {
             type: 'string'
@@ -90,9 +100,20 @@ const farmerPicture = {
     required: ['pictureUrl']
 };
 
+const farmerReadings = {
+    weight: {
+        type: 'string'
+    },
+    farmerId: {
+        type: 'string'
+    },
+    required: ['weight']
+};
+
 farmerSchema.farmerPostalAdd = farmerPostalAdd;
 farmerSchema.farmerHomeAdd = farmerHomeAdd;
-farmerSchema.farmarInfo = farmarInfo;
+farmerSchema.farmerInfo = farmerInfo;
+farmerSchema.farmerReadings = farmerReadings;
 farmerSchema.farmerPicture = farmerPicture;
 
 module.exports = farmerSchema;

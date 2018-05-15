@@ -12,10 +12,11 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send({ 'Greet': 'Hello Express App' });
+    res.send({ Greet: 'Hello Express App' });
 });
 
 require('./routes/userRoute')(app, db.User, _, bcrypt);
+require('./routes/readingsRounte')(app, db.Farmer, db.FarmerReadings);
 require('./routes/farmerRoute')(
     app,
     db.Farmer,
@@ -25,7 +26,7 @@ require('./routes/farmerRoute')(
     _
 );
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log('Server running on port ' + PORT);
     });
