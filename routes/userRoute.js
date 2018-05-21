@@ -1,6 +1,7 @@
 const Validator = require('jsonschema').validate;
 
 const userSchema = require('../schemas/userSchema');
+const errorMessage = require('../lib/errorMessage');
 
 module.exports = (app, User, _, bcrypt) => {
     app.get('/users', (req, res) => {
@@ -44,7 +45,7 @@ module.exports = (app, User, _, bcrypt) => {
                 res.json(user.toPublicJSON());
             },
             err => {
-                res.status(400).json(err);
+                res.status(400).json(errorMessage(err.errors));
             }
         );
     });

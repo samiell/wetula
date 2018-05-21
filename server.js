@@ -12,7 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send({ Greet: 'Hello Express App' });
+    res.send({ App: 'Wetula API' });
 });
 
 require('./routes/userRoute')(app, db.User, _, bcrypt);

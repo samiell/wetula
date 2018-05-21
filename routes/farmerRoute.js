@@ -1,6 +1,7 @@
 const Validator = require('jsonschema').validate;
 
 const farmerSchema = require('../schemas/farmerSchema');
+const errorMessage = require('../lib/errorMessage');
 
 module.exports = (app, Farmer, FarmerHA, FarmerPA, FarmerPic, _) => {
     app.get('/farmers', (req, res) => {
@@ -17,7 +18,20 @@ module.exports = (app, Farmer, FarmerHA, FarmerPA, FarmerPic, _) => {
 
     app.get('/farmers/:farmerId', (req, res) => {
         const farmerId = req.params.farmerId;
-        res.send(farmerId);
+        const where = { farmerId };
+
+        Farmer.findOne({ where }).then(
+            farmer => {
+                if (farmer) {
+                    res.send(farmer.toPublicJSON());
+                } else {
+                    res.status(404).send();
+                }
+            },
+            err => {
+                res.status(500).send();
+            }
+        );
     });
 
     app.post('/farmers', (req, res) => {
@@ -117,18 +131,26 @@ module.exports = (app, Farmer, FarmerHA, FarmerPA, FarmerPic, _) => {
                                                     );
                                                 },
                                                 err => {
-                                                    res.status(400).json(err);
+                                                    res
+                                                        .status(400)
+                                                        .json(
+                                                            errorMessage(
+                                                                err.errors
+                                                            )
+                                                        );
                                                 }
                                             );
                                         });
                                 },
                                 err => {
-                                    res.status(400).json(err);
+                                    res
+                                        .status(400)
+                                        .json(errorMessage(err.errors));
                                 }
                             );
                     },
                     err => {
-                        res.status(400).json(err);
+                        res.status(400).json(errorMessage(err.errors));
                     }
                 );
         } else {

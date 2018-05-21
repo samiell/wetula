@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             farmerId: {
                 type: DataTypes.STRING,
+                unique: true,
                 allowNull: false
             },
             telephone: {

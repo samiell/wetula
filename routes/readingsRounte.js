@@ -1,10 +1,53 @@
 const Validator = require('jsonschema').validate;
 
 const farmerSchema = require('../schemas/farmerSchema');
+const errorMessage = require('../lib/errorMessage');
 
 module.exports = (app, Farmer, FarmerReadings) => {
     app.get('/readings', (req, res) => {
-        res.send({ readings: '50kg' });
+        FarmerReadings.findAll().then(
+            readings => {
+                if (readings) {
+                    var farmerReadings = [];
+
+                    readings.forEach(reading => {
+                        farmerReadings.push(reading.toPublicJSON());
+                    });
+
+                    res.send(farmerReadings);
+                } else {
+                    res.status(404).send();
+                }
+            },
+            err => {
+                res.status(500).send();
+            }
+        );
+    });
+
+    app.get('/readings/:farmerId', (req, res) => {
+        const farmerId = req.params.farmerId;
+
+        const where = { farmerId };
+
+        FarmerReadings.findAll({ where }).then(
+            readings => {
+                if (readings && readings.length > 0) {
+                    var farmerReadings = [];
+
+                    readings.forEach(reading => {
+                        farmerReadings.push(reading.toPublicJSON());
+                    });
+
+                    res.send(farmerReadings);
+                } else {
+                    res.status(404).send();
+                }
+            },
+            err => {
+                res.status(500).send();
+            }
+        );
     });
 
     app.post('/readings/:farmerId', (req, res) => {
@@ -27,12 +70,18 @@ module.exports = (app, Farmer, FarmerReadings) => {
 
             Farmer.findOne({ where }).then(
                 farmer => {
-                    FarmerReadings.create(readings).then(
-                        reading => {
-                            res.json(reading);
-                        },
-                        err => {}
-                    );
+                    if (farmer) {
+                        FarmerReadings.create(readings).then(
+                            reading => {
+                                res.json(reading);
+                            },
+                            err => {
+                                res.status(400).json(errorMessage(err.errors));
+                            }
+                        );
+                    } else {
+                        res.status(404).send();
+                    }
                 },
                 err => {
                     res.status(500).send();
