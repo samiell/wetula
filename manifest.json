@@ -1,0 +1,18 @@
+{
+  "visualization": {
+    "id": "grih-radar-chart",
+    "label": "GRIH Radar Chart",
+    "type": "radar",
+    "description": "GRIH Radar Chart with customization for Looker Studio",
+    "dataModel": "table",
+    "configModel": {
+      "backgroundColor": { "type": "color", "default": "#ffffff" },
+      "lineColor": { "type": "color", "default": "#1E88E5" },
+      "fillColor": { "type": "color", "default": "rgba(30, 136, 229, 0.1)" },
+      "textColor": { "type": "color", "default": "#333333" }
+    },
+    "resources": {
+      "script": "https://script.google.com/macros/library/d/1WuPRSAWs5kOSb2ifwfQhftykH9sd_WJv2NxW7nLS2S_SVRabbxj7PK8M/1"
+    }
+  }
+}
